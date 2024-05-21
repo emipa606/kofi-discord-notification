@@ -11,21 +11,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const {Webhook} = require('discord-webhook-node');
 const URL = require('url').URL;
-const {createLogger, transports} = require('winston');
-
-const logLevels = {
-  fatal: 0,
-  error: 1,
-  warn: 2,
-  info: 3,
-  debug: 4,
-  trace: 5,
-};
-
-const logger = createLogger({
-  levels: logLevels,
-  transports: [new transports.Console()],
-});
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -114,11 +99,8 @@ app.use('/', async function(req, res) {
 
     await webhook.send(message);
   } catch (err) {
-    logger.error(err);
     return res.json({success: false, error: err});
   }
-
-  logger.info(`Processed payload ${payload.message_id}.`);
 
   return res.json({success: true});
 });
