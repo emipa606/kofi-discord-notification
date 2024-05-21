@@ -85,6 +85,7 @@ app.use('/', async function(req, res) {
       '🎈 **Yay!**',
       '🍰 **Let\'s have some pie!**',
       '☕ **Time for a coffee!**',
+      '🧁 **How sweet!**',
     ];
 
     let message = greetings[Math.floor(Math.random() * greetings.length)];
