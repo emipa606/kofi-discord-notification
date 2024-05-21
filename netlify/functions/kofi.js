@@ -1,4 +1,10 @@
-// Modified from: https://github.com/eramsorgr/kofi-discord-alerts
+// SPDX-FileCopyrightText: 2023 Raiden
+// SPDX-FileCopyrightText: 2024 Simon Schneegans <code@simonschneegans.de>
+// SPDX-License-Identifier: MIT
+
+// Based on https://github.com/raidensakura/kofi-discord-notification which in
+// turn was modified from: https://github.com/eramsorgr/kofi-discord-alerts
+
 const express = require('express');
 const serverless = require('serverless-http');
 const app = express();
