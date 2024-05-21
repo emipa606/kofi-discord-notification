@@ -76,29 +76,39 @@ app.use('/', async function(req, res) {
 
   // Send Discord embed
   try {
-    const embed = new MessageBuilder();
+    // const embed = new MessageBuilder();
 
-    if (kofi_username) embed.setURL(`https://ko-fi.com/${kofi_username}`);
+    // if (kofi_username) embed.setURL(`https://ko-fi.com/${kofi_username}`);
 
-    switch (payload.tier_name) {
-      case 'Silver':
-        embed.setColor('#797979');
-      case 'Gold:':
-        embed.setColor('#ffc530');
-      case 'Platinum':
-        embed.setColor('#2ed5ff');
-      default:
-        embed.setColor('#9b59b6');
+    // switch (payload.tier_name) {
+    //   case 'Silver':
+    //     embed.setColor('#797979');
+    //   case 'Gold:':
+    //     embed.setColor('#ffc530');
+    //   case 'Platinum':
+    //     embed.setColor('#2ed5ff');
+    //   default:
+    //     embed.setColor('#9b59b6');
+    // }
+
+    // embed.addField(`From`, `${payload.from_name}`, true);
+    // embed.addField(`Type`, `${payload.type}`, true);
+    // embed.addField(`Amount`, `${payload.amount} ${payload.currency}`, true);
+    // if (payload.message && payload.message !== 'null')
+    //   embed.addField(`Message`, `${payload.message}`);
+    // embed.setTimestamp();
+
+    hook.setUsername('Foo Bot');
+    hook.setAvatar('https://storage.ko-fi.com/cdn/nav-logo-stroke.png');
+
+    let message = `🎂 **Let's celebrate!** 🎂
+${payload.from_name} just made a first monthly donation. Thank you so much! 🎊🎈`;
+
+    if (payload.message && payload.message !== 'null') {
+      message += `\n${payload.from_name} writes: ${payload.message}`;
     }
 
-    embed.addField(`From`, `${payload.from_name}`, true);
-    embed.addField(`Type`, `${payload.type}`, true);
-    embed.addField(`Amount`, `${payload.amount} ${payload.currency}`, true);
-    if (payload.message && payload.message !== 'null')
-      embed.addField(`Message`, `${payload.message}`);
-    embed.setTimestamp();
-
-    await webhook.send(embed);
+    await hook.send(message);
   } catch (err) {
     logger.error(err);
     return res.json({success: false, error: err});
