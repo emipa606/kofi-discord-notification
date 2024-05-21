@@ -78,24 +78,34 @@ app.use('/', async function(req, res) {
     webhook.setAvatar(
         'https://assets-global.website-files.com/5c14e387dab576fe667689cf/64f1a9ddd0246590df69e9f4_ko-fi_logo_01-p-500.png');
 
-    let message = '';
+    const greetings = [
+      '🎂 **Let\'s celebrate!** 🎂',
+      '🎉 **Hooray!** 🎉',
+      '🎊 **Party time!** 🎊',
+      '🎈 **Yay!** 🎈',
+      '🍰 **Let\'s have some pie!** 🍰',
+      '☕ **Time for a coffee!** ☕',
+    ];
+
+    let message = greetings[Math.floor(Math.random() * greetings.length)];
 
     if (payload.is_subscription_payment) {
       if (payload.is_first_subscription_payment) {
-        message = `🎂 **Let's celebrate!** 🎂
-${payload.from_name} just made a first monthly donation. Thank you so much! 🎊🎈`;
+        message += `**${
+            payload
+                .from_name}** just made a first monthly donation. Thank you so much! 🎊🎈`;
       } else {
-        message = `💖 **A BIG thank you to ${payload.from_name}!** 💖
-Your continued monthly support of Kando is totally awesome!`;
+        message += `**${
+            payload
+                .from_name}**'s continued monthly Kando support is totally awesome! 💖`;
       }
-
     } else {
-      message = `🎉 **A shout-out to ${payload.from_name}!** 🎉
-Thank you so much for your awesome donation!`;
+      message += `**${
+          payload.from_name}** just donated via Ko-fi. Thank you so much! 👏`;
     }
 
     if (payload.message && payload.message !== 'null') {
-      message += `\n${payload.from_name} writes: ${payload.message}`;
+      message += `**${payload.from_name}** writes: ${payload.message}`;
     }
 
     await webhook.send(message);
