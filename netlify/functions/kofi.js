@@ -40,8 +40,9 @@ app.use('/', async function(req, res) {
   }
 
   const kofi_token = process.env.KOFI_TOKEN;
-  if (!kofi_token)
+  if (!kofi_token) {
     return res.json({success: false, error: 'Ko-fi token required.'});
+  }
 
   const kofi_username = process.env.KOFI_USERNAME;
 
@@ -66,6 +67,11 @@ app.use('/', async function(req, res) {
     payload['shipping'] = null;
   } catch {
     return res.json({success: false, error: 'Payload data invalid.'});
+  }
+
+  // Ignore private messages
+  if (!payload.is_public) {
+    return res.json({success: true});
   }
 
   // Send Discord embed
