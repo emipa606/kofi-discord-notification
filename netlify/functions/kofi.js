@@ -3,7 +3,7 @@ const express = require('express');
 const serverless = require('serverless-http');
 const app = express();
 const bodyParser = require('body-parser');
-const {Webhook, MessageBuilder} = require('discord-webhook-node');
+const {Webhook} = require('discord-webhook-node');
 const URL = require('url').URL;
 const {createLogger, transports} = require('winston');
 
@@ -44,8 +44,6 @@ app.use('/', async function(req, res) {
     return res.json({success: false, error: 'Ko-fi token required.'});
   }
 
-  const kofi_username = process.env.KOFI_USERNAME;
-
   const webhook = new Webhook(webhook_url);
 
   // Check if payload data is valid
@@ -74,41 +72,32 @@ app.use('/', async function(req, res) {
     return res.json({success: true});
   }
 
-  // Send Discord embed
+  // Send Discord message
   try {
-    // const embed = new MessageBuilder();
+    webhook.setUsername('Foo Bot');
+    webhook.setAvatar('https://storage.ko-fi.com/cdn/nav-logo-stroke.png');
 
-    // if (kofi_username) embed.setURL(`https://ko-fi.com/${kofi_username}`);
+    let message = '';
 
-    // switch (payload.tier_name) {
-    //   case 'Silver':
-    //     embed.setColor('#797979');
-    //   case 'Gold:':
-    //     embed.setColor('#ffc530');
-    //   case 'Platinum':
-    //     embed.setColor('#2ed5ff');
-    //   default:
-    //     embed.setColor('#9b59b6');
-    // }
-
-    // embed.addField(`From`, `${payload.from_name}`, true);
-    // embed.addField(`Type`, `${payload.type}`, true);
-    // embed.addField(`Amount`, `${payload.amount} ${payload.currency}`, true);
-    // if (payload.message && payload.message !== 'null')
-    //   embed.addField(`Message`, `${payload.message}`);
-    // embed.setTimestamp();
-
-    hook.setUsername('Foo Bot');
-    hook.setAvatar('https://storage.ko-fi.com/cdn/nav-logo-stroke.png');
-
-    let message = `🎂 **Let's celebrate!** 🎂
+    if (payload.is_subscription_payment) {
+      if (payload.is_first_subscription_payment) {
+        message = `🎂 **Let's celebrate!** 🎂
 ${payload.from_name} just made a first monthly donation. Thank you so much! 🎊🎈`;
+      } else {
+        message = `💖 **A BIG thank you to ${payload.from_name}!** 💖
+Your continued monthly support of Kando is totally awesome!`;
+      }
+
+    } else {
+      message = `🎉 **A shout-out to ${payload.from_name}!** 🎉
+Thank you so much for your awesome donation!`;
+    }
 
     if (payload.message && payload.message !== 'null') {
       message += `\n${payload.from_name} writes: ${payload.message}`;
     }
 
-    await hook.send(message);
+    await webhook.send(message);
   } catch (err) {
     logger.error(err);
     return res.json({success: false, error: err});
