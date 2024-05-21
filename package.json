@@ -7,6 +7,6 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
-    "netlify-cli": "^14.0.0"
+    "netlify-cli": "^17.23.5"
   }
 }
