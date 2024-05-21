@@ -74,8 +74,9 @@ app.use('/', async function(req, res) {
 
   // Send Discord message
   try {
-    webhook.setUsername('Foo Bot');
-    webhook.setAvatar('https://storage.ko-fi.com/cdn/nav-logo-stroke.png');
+    webhook.setUsername('Ko-fi');
+    webhook.setAvatar(
+        'https://assets-global.website-files.com/5c14e387dab576fe667689cf/64f1a9ddd0246590df69e9f4_ko-fi_logo_01-p-500.png');
 
     let message = '';
 
