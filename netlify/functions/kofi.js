@@ -4,10 +4,8 @@ const serverless = require('serverless-http');
 const app = express();
 const bodyParser = require('body-parser');
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
-const request = require('request');
 const URL = require("url").URL;
-const { Octokit } = require("@octokit/core");
-const { createLogger, format, transports } = require("winston");
+const { createLogger, transports } = require("winston");
 
 const logLevels = {
 	fatal: 0,
@@ -48,13 +46,6 @@ app.use('/', async function (req, res) {
 	const kofi_username = process.env.KOFI_USERNAME;
 
 	const webhook = new Webhook(webhook_url);
-
-	const gist_url = process.env.GIST_URL;
-	const gist_token = process.env.GIST_TOKEN;
-
-	const octokit = new Octokit({
-		auth: gist_token
-	})
 
 	// Check if payload data is valid
 	const data = req.body.data;
@@ -116,74 +107,7 @@ app.use('/', async function (req, res) {
 
 	logger.info(`Processed payload ${payload.message_id}.`);
 
-	// Return early if gist stuff not provided
-	if (!gist_url || !gist_token) {
-		logger.info(`Skipping gist update.`);
-		return res.json({ success: true });
-	}
-
-	// Request for gist content
-	request(gist_url, { json: true }, async (error, resp, body) => {
-		if (error) {
-			logger.error(`Problem retrieving gist content: \n${error}`);
-			return res.json({ success: false, error: error });
-		};
-
-		if (resp.statusCode == 404) {
-			logger.error(`Problem retrieving gist: Not found.`);
-			return res.json({ success: false, error: 'Gist not found.' });
-		}
-
-		let supporters = body || [];
-
-		if (!error && resp.statusCode == 200) {
-			try {
-				supporters.push(payload);
-			} catch (error) {
-				logger.error(`Problem retrieving gist: ${error}.`);
-				return res.json({ success: false, error: error });
-			}
-		};
-
-		return await updateGist(supporters);
-	});
-
-	async function updateGist(supporters) {
-		// Thanks ChatGPT
-		const url = gist_url;
-		const regex = /\/([\da-f]+)\/raw\//;
-
-		const match = url.match(regex);
-
-		if (match) {
-			const gistId = match[1];
-			const timestamp = Date.now();
-			const dateObj = new Date(timestamp);
-			const dateString = dateObj.toLocaleString();
-			let gist_res = await octokit.request(`PATCH /gists/${gistId}`, {
-				gist_id: gistId,
-				description: `Last updated at ${dateString}`,
-				files: {
-					'kofi.json': {
-						content: JSON.stringify(supporters)
-					}
-				},
-				headers: {
-					'X-GitHub-Api-Version': '2022-11-28'
-				}
-			})
-			if (gist_res.status == 200) {
-				logger.info(`Updated gist for payload ${payload.message_id}.`);
-				return res.json({ success: true });
-			} else {
-				logger.error(`Failed to update gist: ${res.status}`)
-				return res.json({ success: false, error: `Update gist failed: ${res.status}` });
-			}
-		} else {
-			logger.error('Could not find your Gist ID from your Gist URL.');
-			return res.json({ success: false, error: 'Could not get Gist ID from URL.' });
-		}
-	}
+	return res.json({ success: true });
 });
 
 module.exports.handler = serverless(app);
