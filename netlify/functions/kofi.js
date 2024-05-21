@@ -80,10 +80,11 @@ app.use('/', async function(req, res) {
 
     const greetings = [
       '🎂 **Let\'s celebrate!**',
+      '🥳 **Yay!**',
       '🎉 **Hooray!**',
       '🎊 **Party time!**',
-      '🎈 **Yay!**',
       '🍰 **Let\'s have some pie!**',
+      '🥧 **Pie time!**',
       '☕ **Time for a coffee!**',
       '🧁 **How sweet!**',
     ];
