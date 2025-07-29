@@ -69,6 +69,9 @@ app.use('/', async function(req, res) {
     webhook.setAvatar(
         'https://assets-global.website-files.com/5c14e387dab576fe667689cf/64f1a9ddd0246590df69e9f4_ko-fi_logo_01-p-500.png');
 
+    const emojis = [":Alpaca:", ":Boomalope:", ":Centipede:", ":Cow:", ":Donkey:", ":Duck:", ":Elephant:", ":Goose:", ":GuineaPig:", ":Horse:", ":Lancer:", ":Muffalo:", ":Pikeman:", ":Scyther:", ":Sheep:", ":Thrumbo:", ":Warg:"];
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+
     let message = "";
     let amount = parseFloat(payload.amount);
     let fromName = payload.from_name;
@@ -78,12 +81,12 @@ app.use('/', async function(req, res) {
    
     if (payload.is_subscription_payment) {
       if (payload.is_first_subscription_payment) {
-        message += ` **${fromName}** just made a first monthly donation of ${formattedAmount} ${currency} via ${link}.\nThank you so much! 🎈`;
+        message += ` **${fromName}** just made a first monthly donation of ${formattedAmount} ${currency} via ${link}.\nThank you so much! ${randomEmoji}`;
       } else {
-        message += ` **${fromName}**'s continued their monthly donation via ${link}.\nTheir support is totally awesome! 💖`;
+        message += ` **${fromName}**'s continued their monthly donation via ${link}.\nTheir support is totally awesome! ${randomEmoji}`;
       }
     } else {
-      message += ` **${fromName}** just donated ${formattedAmount} ${currency} via ${link}.\nThank you so much! 👏`;
+      message += ` **${fromName}** just donated ${formattedAmount} ${currency} via ${link}.\nThank you so much! ${randomEmoji}`;
     }
 
     await webhook.send(message);
