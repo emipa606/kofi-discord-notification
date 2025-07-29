@@ -69,23 +69,23 @@ app.use('/', async function(req, res) {
     webhook.setAvatar(
         'https://assets-global.website-files.com/5c14e387dab576fe667689cf/64f1a9ddd0246590df69e9f4_ko-fi_logo_01-p-500.png');
 
-    const emojis = ["<emojiname:773855564098174997>", 
-                    "<emojiname:773856589659635713>", 
-                    "<emojiname:773859247540404234>",
-                    "<emojiname:773862198019227648>", 
-                    "<emojiname:773856793079709696>", 
-                    "<emojiname:773856899644260383>", 
-                    "<emojiname:773861941994586133>", 
-                    "<emojiname:773857060155949076>", 
-                    "<emojiname:773857170990301185>", 
-                    "<emojiname:773856262134956043>", 
-                    "<emojiname:773859525513445416>", 
-                    "<emojiname:773855344131833886>", 
-                    "<emojiname:773859401583951892>", 
-                    "<emojiname:773859076420927498>", 
-                    "<emojiname:773857329615339520>", 
-                    "<emojiname:773855902310334496>", 
-                    "<emojiname:773861690810171392>"];
+    const emojis = ["<:Alpaca:773855564098174997>", 
+                    "<:Boomalope:773856589659635713> ", 
+                    "<:Centipede:773859247540404234>",
+                    "<:Cow:773862198019227648>", 
+                    "<:Donkey:773856793079709696>", 
+                    "<:Duck:773856899644260383>", 
+                    "<:Elephant:773861941994586133>", 
+                    "<:Goose:773857060155949076>", 
+                    "<:GuineaPig:773857170990301185>", 
+                    "<:Horse:773856262134956043>", 
+                    "<:Lancer:773859525513445416>", 
+                    "<:Muffalo:773855344131833886>", 
+                    "<:Pikeman:773859401583951892>", 
+                    "<:Scyther:773859076420927498>", 
+                    "<:Sheep:773857329615339520>", 
+                    "<:Thrumbo:773855902310334496>", 
+                    "<:Warg:773861690810171392>"];
     const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
 
     let message = "";
