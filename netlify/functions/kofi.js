@@ -74,15 +74,16 @@ app.use('/', async function(req, res) {
     let fromName = payload.from_name;
     let currency = payload.currency;
     let formattedAmount = amount % 1 === 0 ? amount.toFixed(0) : amount.toFixed(2);
+    let link = "[Ko-fi](<https://ko-fi.com/mlie00>)"
    
     if (payload.is_subscription_payment) {
       if (payload.is_first_subscription_payment) {
-        message += ` **${fromName}** just made a first monthly donation of ${formattedAmount} ${currency} via [Ko-fi](https://ko-fi.com/mlie00).\nThank you so much! 🎈`;
+        message += ` **${fromName}** just made a first monthly donation of ${formattedAmount} ${currency} via ${link}.\nThank you so much! 🎈`;
       } else {
-        message += ` **${fromName}**'s continued their monthly donation.\nTheir support is totally awesome! 💖`;
+        message += ` **${fromName}**'s continued their monthly donation via ${link}.\nTheir support is totally awesome! 💖`;
       }
     } else {
-      message += ` **${fromName}** just donated ${formattedAmount} ${currency} via [Ko-fi](https://ko-fi.com/mlie00).\nThank you so much! 👏`;
+      message += ` **${fromName}** just donated ${formattedAmount} ${currency} via ${link}.\nThank you so much! 👏`;
     }
 
     await webhook.send(message);
